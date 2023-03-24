@@ -3,7 +3,6 @@
 import React, {useEffect} from 'react';
 import {StyleSheet, View, StatusBar, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const SplashScreen = ({navigation}) => {
   useEffect(() => {
@@ -14,11 +13,11 @@ const SplashScreen = ({navigation}) => {
 
   return (
     <>
-      <StatusBar animated={true} backgroundColor="#08113E" />
+      <StatusBar animated={true} backgroundColor="#124499" />
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 0, y: 1}}
-        colors={['#08113E', '#1F2C60']}
+        colors={['#124499', '#124499']}
         style={styles.container}>
         <View>
         <Image
