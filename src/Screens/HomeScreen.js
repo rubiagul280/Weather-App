@@ -12,12 +12,11 @@ import {addWeatherData} from '../Components/Store/actions';
 
 const API_KEY = 'a130b590debd59952f9d107b76a270ed';
 const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
-const API_URL_DEFAULT = `https://api.openweathermap.org/data/2.5/weather?q={city name}&appid=${API_KEY}&units=metri`;
+const DEFAULT_CITY = 'Islamabad';
 
 export default function HomeScreen({navigation}) {
   const [searchValue, setSearchValue] = useState('');
   const [weatherData, setWeatherData] = useState(null);
-  const [defaultWeather, setDefaultWeather] = useState('Islamabad');
   const dispatch = useDispatch();
   const searchResults = useSelector(state => state.weather.searchResults);
 
@@ -36,22 +35,6 @@ export default function HomeScreen({navigation}) {
       .catch(error => {
         console.error(error);
       });
-  };
-
-  useEffect(() => {
-    fetchWeatherData();
-  }, []);
-
-  const fetchWeatherData = async () => {
-    try {
-      const response = await fetch(
-        API_URL_DEFAULT.replace('{city name}', 'Islamabad'),
-      );
-      const data = await response.json();
-      setDefaultWeather(data);
-    } catch (err) {
-      console.log(err.message);
-    }
   };
 
   return (
@@ -75,55 +58,32 @@ export default function HomeScreen({navigation}) {
                 Search
               </Button>
             </TouchableOpacity>
-            {weatherData ? (
-              <View style={styles.weatherdetails}>
-                <Text style={styles.heading}>Today's Weather</Text>
-                <Text style={styles.title}>{weatherData.name}</Text>
-                <Icons name="weather-cloudy" size={22} color={'#124499'} />
-                <Text style={{fontSize: 26}}>{weatherData.main.temp} °C</Text>
-                <Text style={{fontSize: 20, marginBottom: 40}}>
-                  {weatherData.weather[0].main}
-                </Text>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={styles.content}>
-                    <Icons name="waves" color={'#124499'} size={26} />
-                    <Text>
-                      {weatherData.main.humidity}% {'\n'}Humidity
-                    </Text>
-                  </View>
-                  <View style={styles.content}>
-                    <Feather name="wind" color={'#124499'} size={26} />
-                    <Text>
-                      {weatherData.wind.speed} m/s {'\n'}Wind Speed
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            ) :
+          </View>
+          {weatherData && (
             <View style={styles.weatherdetails}>
               <Text style={styles.heading}>Today's Weather</Text>
-              {/* <Text style={styles.title}>{defaultWeather.name}</Text> */}
+              <Text style={styles.title}>{weatherData.name}</Text>
               <Icons name="weather-cloudy" size={22} color={'#124499'} />
-              <Text style={{fontSize: 26}}>{defaultWeather.main.temp} °C</Text>
+              <Text style={{fontSize: 26}}>{weatherData.main.temp} °C</Text>
               <Text style={{fontSize: 20, marginBottom: 40}}>
-                {defaultWeather.weather[0].main}
+                {weatherData.weather[0].main}
               </Text>
               <View style={{flexDirection: 'row'}}>
                 <View style={styles.content}>
                   <Icons name="waves" color={'#124499'} size={26} />
                   <Text>
-                    {defaultWeather.main.humidity}% {'\n'}Humidity
+                    {weatherData.main.humidity}% {'\n'}Humidity
                   </Text>
                 </View>
                 <View style={styles.content}>
                   <Feather name="wind" color={'#124499'} size={26} />
                   <Text>
-                    {defaultWeather.wind.speed} m/s {'\n'}Wind Speed
+                    {weatherData.wind.speed} m/s {'\n'}Wind Speed
                   </Text>
                 </View>
               </View>
-            </View> }
-          </View>
+            </View>
+          )}
         </View>
       </LinearGradient>
     </>
