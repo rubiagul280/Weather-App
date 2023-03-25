@@ -6,7 +6,7 @@ import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, StatusBar} from 'react-native';
 import {Button, TextInput, Text, Image} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
-import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import {useDispatch} from 'react-redux';
 import {addWeatherData} from '../Components/Redux/action';
@@ -66,24 +66,21 @@ export default function HomeScreen({navigation}) {
             <View style={styles.weatherdetails}>
               <Text style={styles.heading}>Today's Weather</Text>
               <Text style={styles.title}>{weatherData.name}</Text>
-              <Image
-                source={require('../../assets/images/cloudy.png')}
-                size={40}
-              />
+              <Icon name="weather-cloudy" color={'#124499'} size={140} />
               <Text style={{fontSize: 26}}>{weatherData.main.temp} °C</Text>
               <Text style={{fontSize: 20, marginBottom: 40}}>
                 {weatherData.weather[0].main}
               </Text>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'column'}}>
                 <View style={styles.content}>
-                  <Icons name="waves" color={'#124499'} size={26} />
-                  <Text>
+                  <Icon name="waves" color={'#124499'} size={26} />
+                  <Text style={{marginLeft: 8}}>
                     {weatherData.main.humidity}% {'\n'}Humidity
                   </Text>
                 </View>
                 <View style={styles.content}>
                   <Feather name="wind" color={'#124499'} size={26} />
-                  <Text>
+                  <Text style={{marginLeft: 8}}>
                     {weatherData.wind.speed} m/s {'\n'}Wind Speed
                   </Text>
                 </View>
@@ -138,6 +135,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'row',
+    marginLeft: 20,
+    marginBottom: 20,
   },
   heading: {
     fontSize: 18,
