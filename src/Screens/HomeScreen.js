@@ -1,40 +1,43 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, TouchableOpacity, StatusBar} from 'react-native';
-import {Button, TextInput, Text} from 'react-native-paper';
+import {Button, TextInput, Text, Image} from 'react-native-paper';
 import LinearGradient from 'react-native-linear-gradient';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import {useDispatch, useSelector} from 'react-redux';
-import {addWeatherData} from '../Components/Store/actions';
+import {useDispatch} from 'react-redux';
+import {addWeatherData} from '../Components/Redux/action';
 
 const API_KEY = 'a130b590debd59952f9d107b76a270ed';
 const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
 const DEFAULT_CITY = 'Islamabad';
 
 export default function HomeScreen({navigation}) {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState(DEFAULT_CITY);
   const [weatherData, setWeatherData] = useState(null);
   const dispatch = useDispatch();
-  const searchResults = useSelector(state => state.weather.searchResults);
 
   useEffect(() => {
-    if (searchResults.length > 0) {
-      setWeatherData(searchResults[searchResults.length - 1]);
+    fetchWeatherData(DEFAULT_CITY);
+  }, []);
+
+  const fetchWeatherData = async () => {
+    try {
+      const url = `${API_URL}?q=${searchValue}&units=metric&appid=${API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      setWeatherData(data);
+      dispatch(addWeatherData(data));
+    } catch (error) {
+      console.error(error);
     }
-  }, [searchResults]);
+  };
 
   const handleSearch = () => {
-    fetch(`${API_URL}?q=${searchValue}&units=metric&appid=${API_KEY}`)
-      .then(response => response.json())
-      .then(data => {
-        dispatch(addWeatherData(data));
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    fetchWeatherData(searchValue);
   };
 
   return (
@@ -63,7 +66,10 @@ export default function HomeScreen({navigation}) {
             <View style={styles.weatherdetails}>
               <Text style={styles.heading}>Today's Weather</Text>
               <Text style={styles.title}>{weatherData.name}</Text>
-              <Icons name="weather-cloudy" size={22} color={'#124499'} />
+              <Image
+                source={require('../../assets/images/cloudy.png')}
+                size={40}
+              />
               <Text style={{fontSize: 26}}>{weatherData.main.temp} °C</Text>
               <Text style={{fontSize: 20, marginBottom: 40}}>
                 {weatherData.weather[0].main}

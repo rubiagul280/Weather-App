@@ -6,7 +6,7 @@ import SplashScreen from './src/Screens/SplashScreen';
 import HomeScreen from './src/Screens/HomeScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import store from './src/Components/Store/reducer';
+import store from './src/Components/Redux/store';
 import { Provider } from 'react-redux';
 
 const Stack = createNativeStackNavigator();
